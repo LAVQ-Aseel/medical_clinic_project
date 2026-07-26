@@ -6,7 +6,7 @@ const PORT=5000;
 app.use(express.json());
 
 const userRouter=require("./routes/userRoute")
-
+const servicesRoute=require("./routes/serviceRoute")
 
 
 
@@ -15,6 +15,7 @@ const userRouter=require("./routes/userRoute")
 
 
 app.use("/user",userRouter)
+app.use("/services",servicesRoute)
 
 
 

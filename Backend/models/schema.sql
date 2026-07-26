@@ -1,5 +1,5 @@
 CREATE TABLE "users" (
-  "user_id" integer PRIMARY KEY,
+  "user_id" GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "username" varchar,
   "email" varchar UNIQUE NOT NULL,
   "password" varchar NOT NULL,
@@ -27,14 +27,13 @@ CREATE TABLE "role_permission" (
 );
 
 CREATE TABLE "services" (
-  "services_id" integer PRIMARY KEY,
+  "services_id" GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "services_name" varchar,
-  "user_id" integer,
   "created_at" timestamp,
   "price" decimal,
   "image_url" varchar,
   "video_url" varchar,
-  FOREIGN KEY ("user_id") REFERENCES "users" ("user_id")
+
 );
 
 CREATE TABLE "booking" (

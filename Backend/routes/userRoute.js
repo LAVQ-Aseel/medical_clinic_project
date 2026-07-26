@@ -8,7 +8,7 @@ const userRouter=express.Router()
 userRouter.post("/register",register)
 userRouter.post("/login",login)
 userRouter.get("/getAllUser",getAllUsers)
-userRouter.get("/getUser/:id",getUserById)
+userRouter.get("/getUser/:user_id",getUserById)
 userRouter.put("/updateUser",updateUser)
 
 
