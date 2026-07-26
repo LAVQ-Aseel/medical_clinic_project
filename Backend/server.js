@@ -11,9 +11,6 @@ const servicesRoute=require("./routes/serviceRoute")
 
 
 
-
-
-
 app.use("/user",userRouter)
 app.use("/services",servicesRoute)
 
