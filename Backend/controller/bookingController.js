@@ -3,8 +3,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const getAllBooking = (req, res) => {
-
-
   const sql = `
 SELECT 
 b.book_id,
@@ -37,87 +35,83 @@ LEFT JOIN users u ON b.book_id=u.user_id
     });
 };
 
-const newBook=async(req,res)=>{
-const userId=req.user.userId
-    const{user_name,service_name,service_id,time}=req.body
- 
+const newBook = async (req, res) => {
+  const userId = req.user.userId;
+  const { user_name, service_name, service_id, time } = req.body;
 
-try{
-const sql=`
+  try {
+    const sql = `
 INSERT INTO booking (user_id,user_name,service_id,service_name,time) 
 VALUES ($1,$2,$3,$4,$5)
 RETURNING *
-`
+`;
 
-const result=await pool.query(sql,
-    [
-        userId,
-        user_name,
-    service_id   || null, 
-    service_name  || null,
-    time || null])
+    const result = await pool.query(sql, [
+      userId,
+      user_name,
+      service_id || null,
+      service_name || null,
+      time || null,
+    ]);
 
-res.status(201).json({
-    success:true,
-    message:"created successfully"
-})
-
-}catch(err){
-       res.status(500).json({
+    res.status(201).json({
+      success: true,
+      message: "created successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
       success: false,
       message: "Server Error",
-      error: err.message
+      error: err.message,
     });
-}
+  }
+};
 
-}
+const getBookByService = (req, res) => {
+  const { service_id } = req.params;
 
+  if (!service_id) {
+    return res.status(400).json({
+      success: false,
+      message: "service id is required",
+    });
+  }
 
-const getBookByService=(req,res)=>{
-    const{service_name}=req.body
-
-    const sql=`
+  const sql = `
     SELECT
 b.book_id,
-
-u.user_name,
-s.service_name,
+u.username,
+s.services_name,
 b.time
 FROM booking b
-LEFT JOIN services s ON b.book_id=b.service_id
+LEFT JOIN services s ON b.service_id=b.service_id
 LEFT JOIN users u ON b.user_id=u.user_id
-WHERE s.service_name=$1
+WHERE b.service_id=$1
     
 
-    `
-   pool.query(sql,[service_name]).then(({rows})=>{
-if(rows.length==0){
-    return res.status(400).json({
-        success:false,
-        message:"no booking yet"
+    `;
+  pool
+    .query(sql, [service_id])
+    .then(({ rows }) => {
+      if (rows.length == 0) {
+        return res.status(404).json({
+          success: false,
+          message: "no booking yet",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        booking: rows,
+      });
     })
 
-    
-}
- return res.status(200).json({
-        success:true,
-        booking:rows
-    })
+    .catch((err) => {
+      return res.status(500).json({
+        success: false,
+        message: "server error",
+        error: err.message,
+      });
+    });
+};
 
-
-
-
-   })
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   .catch((err)=>{})
-}
-
-module.exports = { getAllBooking,newBook ,getBookByService};
+module.exports = { getAllBooking, newBook, getBookByService };
