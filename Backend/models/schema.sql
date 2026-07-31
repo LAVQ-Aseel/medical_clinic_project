@@ -37,10 +37,11 @@ CREATE TABLE "services" (
 );
 
 CREATE TABLE "booking" (
-  "book_id" integer PRIMARY KEY,
+  "book_id" SERIAL PRIMARY KEY,
   "user_id" integer,
   "user_name" varchar,
   "service_id" integer,
+   "service_name" integer,
   "time" timestamp NOT NULL,
   FOREIGN KEY ("service_id") REFERENCES "services" ("services_id"),
   FOREIGN KEY ("user_id") REFERENCES "users" ("user_id")

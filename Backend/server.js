@@ -7,12 +7,14 @@ app.use(express.json());
 
 const userRouter=require("./routes/userRoute")
 const servicesRoute=require("./routes/serviceRoute")
+const bookingRoute=require("./routes/bookingRoute")
 
 
 
 
 app.use("/user",userRouter)
 app.use("/services",servicesRoute)
+app.use("/booking",bookingRoute)
 
 
 

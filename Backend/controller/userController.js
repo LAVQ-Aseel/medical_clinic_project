@@ -95,8 +95,8 @@ const login = (req, res) => {
 
       return bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch) {
-          return res.json({
-            success: "false",
+          return res.status(403).json({
+            success: false,
             message: "email or password is incorrect",
           });
         }

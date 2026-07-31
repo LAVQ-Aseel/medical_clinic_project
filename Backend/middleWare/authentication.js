@@ -26,10 +26,9 @@ const authentication = (req, res, next) => {
     }
 
     const verify = jwt.verify(token, process.env.SECRET);
-    req.user = {
-      id: verify.userId,
-    };
+    req.user =verify
     req.token = verify;
+ 
     next();
   } catch (error) {
     return res.status(403).json({
@@ -39,5 +38,6 @@ const authentication = (req, res, next) => {
     });
   }
 };
+
 
 module.exports = authentication;
