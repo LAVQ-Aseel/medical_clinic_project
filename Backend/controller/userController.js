@@ -144,7 +144,8 @@ const getAllUsers = (req, res) => {
     u.email,
     u.phonenumber,
     u.age,
-    u.gender
+    u.gender,
+    u.role_id
     FROM users u
     ORDER BY user_id ASC
     `;

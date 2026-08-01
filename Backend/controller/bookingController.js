@@ -113,5 +113,54 @@ WHERE b.service_id=$1
       });
     });
 };
+  
 
-module.exports = { getAllBooking, newBook, getBookByService };
+const deleteBooking=(req,res)=>{
+    const{book_id}=req.params
+if(!book_id){
+    return res.status(400).json({
+        success:false,
+        message: "id is requierd"
+    })
+}
+
+
+const sql=`
+DELETE FROM booking 
+WHERE book_id=$1
+RETURNING *
+
+`
+
+pool.query(sql,[id]).then(({rows})=>{
+if(rows.length==0){
+return res.status(404).json({
+success:false,
+message:"booking is not found"
+
+})
+}
+
+return res.status(200).json({
+success:true,
+message:"booking is deleted"
+
+
+
+
+
+}).catch((err)=>{
+    return res.status(500).json({
+success:false,
+message:"server error",
+error:err.message
+
+    })
+
+})
+
+
+
+})
+}
+module.exports = { getAllBooking, newBook, getBookByService,deleteBooking };
